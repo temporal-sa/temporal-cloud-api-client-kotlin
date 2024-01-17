@@ -4,9 +4,11 @@
 
 Note, requires creating an API key in Temporal Cloud first. See the docs above.
 
+Builds 
+
 ### Running the example:
 
-First, set the  set the TEMPORAL_CLOUD_API_KEY environment variable to your API key.
+First, set the TEMPORAL_CLOUD_API_KEY environment variable to your API key.
 
 ```
 ./gradlew -q bootRun -PmainClass=com.example.demo.DemoApplicationKt
