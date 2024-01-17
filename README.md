@@ -4,7 +4,7 @@
 
 Note, requires creating an API key in Temporal Cloud first. See the docs above.
 
-Builds 
+Uses protobufs from https://github.com/temporalio/api-cloud -- and a gradle plugin to compile them at build time.
 
 ### Running the example:
 
