@@ -1,17 +1,16 @@
 ## Temporal Cloud Ops API Usage Example
 
-[Temporal Cloud Ops API Docs](https://docs.temporal.io/ops)
+[Temporal Cloud Ops API](https://docs.temporal.io/ops)
 
-Note, requires creating an API key in Temporal Cloud first. See the docs above.
-
-Uses protobufs from https://github.com/temporalio/api-cloud -- and a gradle plugin to compile them at build time.
+Uses [Temporal's API Protobufs](https://github.com/temporalio/api-cloud) and a Gradle plugin to compile at build time.
 
 ### Running the example:
 
-First, set the TEMPORAL_CLOUD_API_KEY environment variable to your API key.
-
+* Create an API key in Temporal Cloud first. See the API docs above for instructions.
+* Set a `TEMPORAL_CLOUD_API_KEY` environment variable to your API key.
+* Run the server:
 ```
 ./gradlew -q bootRun -PmainClass=com.example.demo.DemoApplicationKt
 ```
 
-Then visit `http://localhost:8080/` to see a list of users for your Temporal Cloud account.
+Then visit `http://localhost:8080/` to see a list of users and namespaces for your Temporal Cloud account.
