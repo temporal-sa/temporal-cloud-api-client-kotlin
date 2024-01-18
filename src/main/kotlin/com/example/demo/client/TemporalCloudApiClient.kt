@@ -25,14 +25,14 @@ class TemporalCloudApiClient (host:String, port:Int) {
         blockingStub = CloudServiceGrpc.newBlockingStub(ClientInterceptors.intercept(channel, headerInterceptor, LoggingClientInterceptor()))
     }
 
-    fun getNamespaces(): Int {
+    fun getNamespaces(): List<Namespace> {
         val request: GetNamespacesRequest = GetNamespacesRequest.newBuilder().build()
         try {
             val namespacesResponse: GetNamespacesResponse = blockingStub.getNamespaces(request)
             for (namespace: Namespace in namespacesResponse.namespacesList) {
                 println(namespace)
             }
-            return namespacesResponse.namespacesCount
+            return namespacesResponse.namespacesList
         } catch (e: Exception) {
             println(e)
             throw e

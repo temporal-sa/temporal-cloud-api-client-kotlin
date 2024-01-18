@@ -12,8 +12,9 @@ class TestController {
 
     @GetMapping("/")
     public fun doit(): String {
+        var html = "<h2>Users</h2>"
         val users = client.getUsers()
-        var html = "<table><tr><th>Id</th><th>Email</th><th>First Name</th><th>Created</th></tr>"
+        html += "<table><tr><th>Id</th><th>Email</th><th>First Name</th><th>Created</th></tr>"
         for (user in users) {
             // timestamp to human readable
             val dateString = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(user.createdTime.seconds * 1000 + user.createdTime.nanos / 1000000))
@@ -23,6 +24,19 @@ class TestController {
                     "<td>${dateString}</td></tr>"
         }
         html += "</table>"
+
+        html += "<br><br>"
+        html += "<h2>Namespaces</h2>"
+        val namespaces = client.getNamespaces()
+        html += "<table><tr><th>Namespace</th><th>ID</th><th>Created</th></tr>"
+        for (namespace in namespaces) {
+            // timestamp to human readable
+            val dateString = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(namespace.createdTime.seconds * 1000 + namespace.createdTime.nanos / 1000000))
+
+            html += "<tr><td>${namespace.namespace}</td><td>${namespace.activeRegion}</td>" +
+                    "<td>${dateString}</td></tr>"
+        }
+
         return html
     }
 }
