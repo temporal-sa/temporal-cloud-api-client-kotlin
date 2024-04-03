@@ -11,6 +11,8 @@ Uses [Temporal's API Protobufs](https://github.com/temporalio/api-cloud) and a G
 * To create a new namespace, set a `TEMPORAL_CA_CERT_CONTENTS` to your CA certificate contents.
   * You can trigger a namespace creation by appending `/create-namespace` to your url
   * See `createNamespace()` in `controllers/TestController.kt` for defaults used to create the namespace
+* To use the set permissions links for users
+  * Set a `TEMPORAL_NAMESPACE` environment variable to the namespace you want to set permissions for
 * Run the server:
 ```
 ./gradlew -q bootRun -PmainClass=com.example.demo.DemoApplicationKt

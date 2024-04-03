@@ -16,6 +16,10 @@ import temporal.api.cloud.namespace.v1.Message
 import temporal.api.cloud.namespace.v1.Message.Namespace
 import temporal.api.cloud.namespace.v1.Message.MtlsAuthSpec
 
+import temporal.api.cloud.cloudservice.v1.RequestResponse.SetUserNamespaceAccessRequest
+import temporal.api.cloud.cloudservice.v1.RequestResponse.SetUserNamespaceAccessResponse
+import temporal.api.cloud.identity.v1.Message.NamespaceAccess
+
 import java.util.Base64
 import java.util.logging.Logger
 
@@ -72,6 +76,37 @@ class TemporalCloudApiClient (host:String, port:Int) {
             return createdNamespace
         } catch (e: Exception) {
             println("Error creating namespace: $e")
+            throw e
+        }
+    }
+
+    fun setUserNamespaceAccess(
+        namespace: String,
+        userId: String,
+        permission: String,
+        resourceVersion: String,
+        asyncOperationId: String? = null
+    ): SetUserNamespaceAccessResponse {
+        val namespaceAccess = NamespaceAccess.newBuilder()
+            .setPermission(permission)
+            .build()
+
+        val request = SetUserNamespaceAccessRequest.newBuilder()
+            .setNamespace(namespace)
+            .setUserId(userId)
+            .setAccess(namespaceAccess)
+            .setResourceVersion(resourceVersion)
+            .apply {
+                asyncOperationId?.let { setAsyncOperationId(it) }
+            }
+            .build()
+
+        try {
+            val response: SetUserNamespaceAccessResponse = blockingStub.setUserNamespaceAccess(request)
+            println("User namespace access set successfully")
+            return response
+        } catch (e: Exception) {
+            println("Error setting user namespace access: $e")
             throw e
         }
     }
