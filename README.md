@@ -8,6 +8,9 @@ Uses [Temporal's API Protobufs](https://github.com/temporalio/api-cloud) and a G
 
 * Create an API key in Temporal Cloud first. See the API docs above for instructions.
 * Set a `TEMPORAL_CLOUD_API_KEY` environment variable to your API key.
+* To create a new namespace, set a `TEMPORAL_CA_CERT_CONTENTS` to your CA certificate contents.
+  * You can trigger a namespace creation by appending `/create-namespace` to your url
+  * See `createNamespace()` in `controllers/TestController.kt` for namespace information
 * Run the server:
 ```
 ./gradlew -q bootRun -PmainClass=com.example.demo.DemoApplicationKt

@@ -10,6 +10,13 @@ import java.util.*
 class TestController {
     private val client: TemporalCloudApiClient = TemporalCloudApiClient("saas-api.tmprl.cloud", 443)
 
+    @GetMapping("/create-namespace")
+    public fun createNamespace(): String {
+        val namespaceName = client.createNamespace("api-test", listOf("aws-us-west-2"), 1)
+        return namespaceName
+    }
+
+
     @GetMapping("/")
     public fun doit(): String {
         var html = "<h2>Users</h2>"

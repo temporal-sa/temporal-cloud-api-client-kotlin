@@ -10,7 +10,13 @@ import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceFutureStu
 import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceStub
 import temporal.api.cloud.cloudservice.v1.RequestResponse.GetNamespacesRequest
 import temporal.api.cloud.cloudservice.v1.RequestResponse.GetNamespacesResponse
+import temporal.api.cloud.cloudservice.v1.RequestResponse.CreateNamespaceRequest
+import temporal.api.cloud.cloudservice.v1.RequestResponse.CreateNamespaceResponse
+import temporal.api.cloud.namespace.v1.Message
 import temporal.api.cloud.namespace.v1.Message.Namespace
+import temporal.api.cloud.namespace.v1.Message.MtlsAuthSpec
+
+import java.util.Base64
 import java.util.logging.Logger
 
 class TemporalCloudApiClient (host:String, port:Int) {
@@ -35,6 +41,37 @@ class TemporalCloudApiClient (host:String, port:Int) {
             return namespacesResponse.namespacesList
         } catch (e: Exception) {
             println(e)
+            throw e
+        }
+    }
+
+    fun createNamespace(
+        name: String,
+        regions: List<String>,
+        retentionDays: Int,
+        customSearchAttributes: Map<String, String> = emptyMap()
+    ): String {
+        val caCert = System.getenv("TEMPORAL_CA_CERT_CONTENTS") ?: ""
+        val caCertBase64 = Base64.getEncoder().encodeToString(caCert.toByteArray())
+
+        val namespaceSpec = Message.NamespaceSpec.newBuilder()
+            .setName(name)
+            .addAllRegions(regions)
+            .setRetentionDays(retentionDays)
+            .setMtlsAuth(MtlsAuthSpec.newBuilder().setAcceptedClientCa(caCertBase64))
+            .putAllCustomSearchAttributes(customSearchAttributes)
+            .build()
+
+        val request = CreateNamespaceRequest.newBuilder().setSpec(namespaceSpec)
+            .build()
+
+        try {
+            val response: CreateNamespaceResponse = blockingStub.createNamespace(request)
+            val createdNamespace = response.namespace
+            println("Created namespace: $createdNamespace")
+            return createdNamespace
+        } catch (e: Exception) {
+            println("Error creating namespace: $e")
             throw e
         }
     }

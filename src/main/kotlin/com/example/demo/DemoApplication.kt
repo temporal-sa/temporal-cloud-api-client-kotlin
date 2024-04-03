@@ -10,4 +10,5 @@ fun main(args: Array<String>) {
     runApplication<DemoApplication>(*args)
     println("Server running at http://localhost:8080/")
     println("Ensure you have set the TEMPORAL_CLOUD_API_KEY environment variable.")
+    println("Ensure you have set the TEMPORAL_CA_CERT_CONTENTS environment variable.")
 }
