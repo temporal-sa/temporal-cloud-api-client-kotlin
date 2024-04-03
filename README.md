@@ -12,7 +12,7 @@ Uses [Temporal's API Protobufs](https://github.com/temporalio/api-cloud) and a G
   * You can trigger a namespace creation by appending `/create-namespace` to your url
   * See `createNamespace()` in `controllers/TestController.kt` for defaults used to create the namespace
 * To use the set permissions links for users
-  * Set a `TEMPORAL_NAMESPACE` environment variable to the namespace you want to set permissions for
+  * Set a `TEMPORAL_NAMESPACE` environment variable to the namespace you want to set permissions for (example: `default.acctid`).
 * Run the server:
 ```
 ./gradlew -q bootRun -PmainClass=com.example.demo.DemoApplicationKt
