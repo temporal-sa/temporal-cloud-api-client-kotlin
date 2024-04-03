@@ -41,7 +41,7 @@ class TestController {
 //        println(result.toString());
 
         // default namespace to change permissions on in testing
-        val temporalNamespace = System.getenv("TEMPORAL_NAMESPACE") ?: ""
+        val temporalNamespace = System.getenv("TEMPORAL_NAMESPACE") ?: "ERROR: TEMPORAL_NAMESPACE ENV VAR NOT SET"
         var html = "<h2>Users</h2>"
         val users = client.getUsers()
         html += "<table><tr><th>Id</th><th>Email</th><th>First Name</th><th>Resource Version</th><th>Created</th>" +
