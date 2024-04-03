@@ -27,25 +27,33 @@ class TestController {
         @PathVariable resourceVersion: String
     ): String {
         val result = client.setUserNamespaceAccess(namespace, userId, permission, resourceVersion)
-        return "$result<br/><br/><a href='/'>Back</a>"
+
+        val temporalNamespace = System.getenv("TEMPORAL_NAMESPACE") ?: ""
+
+        var html = "$result<br/><br/>"
+
+        html += if(temporalNamespace != "") { "<br/><a href='https://cloud.temporal.io/namespaces/$temporalNamespace'>View in Temporal Cloud</a><br/><br/>"} else { "" } +
+                "<a href='/'>Back</a>"
+
+        return html
     }
 
     @GetMapping("/")
     public fun doit(): String {
 
-//        val result = client.setUserNamespaceAccess(
-//            "steveandroulakis-test-1.sdvdw",
-//            "7b439757f60044d3bee71ac2e338d532", "admin",
-//            "410e9673-65c2-42d7-a836-9d4f906ec05f"
-//        );
-//        println(result.toString());
-
         // default namespace to change permissions on in testing
-        val temporalNamespace = System.getenv("TEMPORAL_NAMESPACE") ?: "ERROR: TEMPORAL_NAMESPACE ENV VAR NOT SET"
+        val temporalNamespace = System.getenv("TEMPORAL_NAMESPACE") ?: ""
         var html = "<h2>Users</h2>"
         val users = client.getUsers()
-        html += "<table><tr><th>Id</th><th>Email</th><th>First Name</th><th>Resource Version</th><th>Created</th>" +
-                "<th>on $temporalNamespace namespace</th>" +
+        html += "<table><tr><th>Id</th><th>Email</th><th>First Name</th><th>Resource Version</th><th>Created</th>"
+
+        html += if(temporalNamespace != "") {
+            "<th style=\"color: green\">Set user permissions on <br/><a href='https://cloud.temporal.io/namespaces/$temporalNamespace'>$temporalNamespace</a></th>"
+        } else {
+            "<th style=\"color: green\">To set namespace permissions<br/> set env var TEMPORAL_NAMESPACE</th>"
+        }
+
+        html +=
                 "</tr>"
         for (user in users) {
             // timestamp to human readable
