@@ -1,24 +1,21 @@
 package com.example.demo.client
 
-import com.google.api.Logging
-import io.grpc.Channel
 import io.grpc.ClientInterceptors
 import io.grpc.ManagedChannelBuilder
-import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc
-import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceBlockingStub
-import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceFutureStub
-import temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceStub
-import temporal.api.cloud.cloudservice.v1.RequestResponse.GetNamespacesRequest
-import temporal.api.cloud.cloudservice.v1.RequestResponse.GetNamespacesResponse
-import temporal.api.cloud.cloudservice.v1.RequestResponse.CreateNamespaceRequest
-import temporal.api.cloud.cloudservice.v1.RequestResponse.CreateNamespaceResponse
-import temporal.api.cloud.namespace.v1.Message
-import temporal.api.cloud.namespace.v1.Message.Namespace
-import temporal.api.cloud.namespace.v1.Message.MtlsAuthSpec
+import io.temporal.api.cloud.cloudservice.v1.CloudServiceGrpc
+import io.temporal.api.cloud.cloudservice.v1.CloudServiceGrpc.CloudServiceBlockingStub
+import io.temporal.api.cloud.cloudservice.v1.GetNamespacesRequest
+import io.temporal.api.cloud.cloudservice.v1.GetNamespacesResponse
+import io.temporal.api.cloud.cloudservice.v1.CreateNamespaceRequest
+import io.temporal.api.cloud.cloudservice.v1.CreateNamespaceResponse
+import io.temporal.api.cloud.namespace.v1.Namespace
+import io.temporal.api.cloud.namespace.v1.MtlsAuthSpec
 
-import temporal.api.cloud.cloudservice.v1.RequestResponse.SetUserNamespaceAccessRequest
-import temporal.api.cloud.cloudservice.v1.RequestResponse.SetUserNamespaceAccessResponse
-import temporal.api.cloud.identity.v1.Message.NamespaceAccess
+import io.temporal.api.cloud.cloudservice.v1.SetUserNamespaceAccessRequest
+import io.temporal.api.cloud.cloudservice.v1.SetUserNamespaceAccessResponse
+import io.temporal.api.cloud.identity.v1.NamespaceAccess
+import io.temporal.api.cloud.namespace.v1.NamespaceSpec
+import io.temporal.api.cloud.namespace.v1.NamespaceSpecOrBuilder
 
 import java.util.Base64
 import java.util.logging.Logger
@@ -58,7 +55,7 @@ class TemporalCloudApiClient (host:String, port:Int) {
         val caCert = System.getenv("TEMPORAL_CA_CERT_CONTENTS") ?: ""
         val caCertBase64 = Base64.getEncoder().encodeToString(caCert.toByteArray())
 
-        val namespaceSpec = Message.NamespaceSpec.newBuilder()
+        val namespaceSpec = NamespaceSpec.newBuilder()
             .setName(name)
             .addAllRegions(regions)
             .setRetentionDays(retentionDays)
@@ -111,8 +108,8 @@ class TemporalCloudApiClient (host:String, port:Int) {
         }
     }
 
-    fun getUsers(): List<temporal.api.cloud.identity.v1.Message.User> {
-        val request = temporal.api.cloud.cloudservice.v1.RequestResponse.GetUsersRequest.newBuilder().build()
+    fun getUsers(): List<io.temporal.api.cloud.identity.v1.User> {
+        val request = io.temporal.api.cloud.cloudservice.v1.GetUsersRequest.newBuilder().build()
         try {
             val usersResponse = blockingStub.getUsers(request)
             for (user in usersResponse.usersList) {
