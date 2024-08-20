@@ -23,7 +23,7 @@ class HeaderClientInterceptor(private val apiKey: String) : ClientInterceptor {
         return object: ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(next.newCall(method, callOptions)) {
             override fun start(responseListener: Listener<RespT>, headers: Metadata) {
                 headers.put(AUTHORIZATION_HEADER_KEY, "Bearer $apiKey")
-                headers.put(CUSTOM_HEADER_KEY, "2023-10-01-00")
+                headers.put(CUSTOM_HEADER_KEY, "2024-05-13-00")
                 super.start(object: ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(responseListener) {
                     override fun onHeaders(headers: Metadata) {
                         super.onHeaders(headers)

@@ -3,9 +3,7 @@ package com.example.demo.controllers
 import com.example.demo.client.TemporalCloudApiClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import temporal.api.cloud.cloudservice.v1.RequestResponse
 import java.text.SimpleDateFormat
-import temporal.api.cloud.identity.v1.Message.NamespaceAccess
 import java.util.*
 import org.springframework.web.bind.annotation.PathVariable
 
